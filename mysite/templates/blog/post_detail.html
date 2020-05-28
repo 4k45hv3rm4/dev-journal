@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="pt-4 mt-4 container col-md-8">
+    {% if obj %}
+
+        <h3 class="posttitle">{{obj.title}}</h3>
+        {% if obj.image %}
+            <img src="{{ obj.image.url }}" style="width:350px;height:150px;" class="img-repsonsive" />
+        {% endif %}
+    <br>    <small class="postdate">{{obj.created}}</small>
+        <h4><small>{{obj.status|title}}</small></h4>
+        <p class="postcontent">{{obj.body|safe|linebreaks}}</p>
+
+    {% else %}
+
+        <p>No details found</p>
+
+    {% endif %}
+    </div>
+{% endblock %}

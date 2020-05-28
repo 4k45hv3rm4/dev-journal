@@ -3,19 +3,18 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
-
+from django.urls import reverse
 class Post(models.Model):
     STATUS_CHOICES = (
         ('draft', 'Draft'),
         ('publish', 'Publish')
         )
-
     title    = models.CharField(max_length=250)
     slug     = models.CharField(max_length=250, unique=True)
     author   = models.ForeignKey(User, on_delete=models.CASCADE)
-    image    = models.ImageField(upload_to="images/post/{title}")
+    image    = models.ImageField(upload_to="images/", null=True, blank=True)
     body     = models.TextField()
-    publish  = models.DateTimeField(default = timezone.now)
+    publish  = models.DateTimeField(auto_now=False, auto_now_add=False, blank=True, null=True)
     created  = models.DateTimeField(auto_now_add=True)
     updated  = models.DateTimeField(auto_now=True)
     status   = models.CharField(max_length=10,
@@ -31,28 +30,14 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse("post_detail", kwargs={'slug':self.slug })
 
-def create_slug(instance, new_slug = None):
-    slug = slugify(instance.title)
-    if new_slug is not None:
-        slug = new_slug
-    qs = Post.objects.filter(slug=slug).order_by("-id")
-    exists = qs.exists()
-    if exists:
-        new_slug ="%s-%s"%(slug, qs.first().id)
-        return create_slug(instance, new_slug)
-    return slug
 
-
-def pre_save_post_signal_reciever(sender, instance, *args, **kwargs):
-    if not instance.slug:
-        instance.slug = create_slug(instance)
-
-
-pre_save.connect(pre_save_post_signal_reciever, sender=Post)
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Post, self).save(*args, **kwargs)
 
 class Comment(models.Model):
     post    = models.ForeignKey(Post, on_delete=models.CASCADE)
-    name    = models.CharField(max_length=80)
+    author    = models.OneToOneField(User,on_delete=models.CASCADE)
     email   = models.EmailField()
     body    = models.TextField()
     created = models.DateTimeField(auto_now_add=True)

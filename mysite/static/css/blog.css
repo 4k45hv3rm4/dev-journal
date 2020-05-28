@@ -1,0 +1,12 @@
+.posttitle{
+  font-family: 'Russo One', sans-serif;
+  font-size: 3em;
+  text-align: center;
+}
+.postcontent{
+  font-family: 'Montserrat' ;
+  font-size: 1.53em;
+}
+.postdate{
+  text-align: center;
+}
