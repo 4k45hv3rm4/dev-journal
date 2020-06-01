@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 {% load static %}
 <html lang="en">
   <head>
@@ -16,19 +16,78 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&family=Russo+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto&family=Roboto+Condensed&display=swap" rel="stylesheet">
 
-
-    <title>Hello, world!</title>
+    <title>{% block title %}Home{% endblock %}</title>
   </head>
   <body>
-    <div class="container">
-    <h1>Hello, world!</h1>
+    <nav class="navbar navbar-expand-lg navbar-dark  techfont custom-navbar" style="background-color: #111;font-family: 'Russo One' ,sans-serif ;margin-bottom: 8px;padding:20px 18px 20px 18px;font-size: 1.5rem;">
 
+                <a href="{%url 'post_list' %}" class="bigbrand navbar-brand text-white">{%if user.is_authenticated %} Hello {{request.user.username|title}}{%else %}4kash{% endif %}</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon " style="color:white;"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav nav-right  ml-auto px-5">
+                  <form method="get"  >
+                        <input class="form-control" name="q" id="id_q" placeholder="Search here!!!" style="width=100px;" type="text" >
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-primary mt-2" class="pt-2 mt-2" value="search">
+                    </form>
+                    <li class="nav-item "><a class="nav-link text-primary" href="{%url 'about' %}">About</a>
+
+
+
+
+                    {%if user.is_authenticated %}
+
+                        <li class="nav-item"><a class="nav-link text-primary"  href="{%url 'create_post' %}">New post</a>
+                        <li class="nav-item"><a class="nav-link text-primary" href="{% url 'drafts' %}">Drafts</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link text-primary" href="{%url 'account' %}">profile</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link text-primary" href="{%url 'logout' %}">Log Out</a>
+                        </li>
+
+
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link text-primary" href="{%url 'login' %}"><span class="glyphicon glyphicon-user"></span>Login</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-primary" href="{%url 'register' %}"><span class="glyphicon glyphicon-user"></span>Sign Up</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+        </nav>
+
+    <div class="container ">
       {% block content %}
 
+      <div class="content col-md-8">
+      <h4 class="text-danger display-4">Welcome To this site !!!</h4>
+      <p>Use this site to write articles and posts that inspire Other peoples .  </p>
+      <p> You can write about your success journey . Your biggest Failures and your top tricks to build a successfull and grandeur Life .
+      Share Your knowledge by writing posts. </p>
+      Feel Free to reach out to me at
+      <a href="https://twitter.com/Akashverm4" class="btn btn-link">Twitter</a>
+      <a href="https://www.linkedin.com/in/akash-verma-8473a6151/" class="btn btn-link">LinkedIn</a>
+      <a href="https://www.instagram.com/4kash__/" class="btn btn-link">Instagram</a>
+      <a href="https://github.com/4k45hv3rm4" class="btn btn-link">Github</a>
+
+      <h5 class="display-5">Trust yourself ! Be Smart ! Be Accountable !  </h5>
+      <h5 class="display-5"></h5>
+      </div>
       {% endblock %}
     </div>
     <!-- Optional JavaScript -->
+
+    <script type="text/javascript">
+        document.getElementById("id_q").value = "{{query}}"
+
+    </script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

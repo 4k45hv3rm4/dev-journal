@@ -1,0 +1,41 @@
+{% extends 'base.html '%}
+
+{% block content %}
+<p>Account</p>
+
+<form method="post">
+    {% csrf_token %}
+    {%for field in account_form %}
+    <p>
+        {{field.label_tag}}
+        {{field}}
+    </p>
+    {% if field.help_text %}
+        <small style="color:grey;">{{field.help_text}}</small>
+        {% endif %}
+     {% endfor %}
+    {%for field in account_form %}
+        {% for error in field.errors %}
+            <p style="color:red">{{error}}</p>
+        {% endfor %}
+    {% endfor %}
+
+        <!-- {{field.label_tag}}
+        <p style="color:red;">{{ field.errors }}</p>
+        {{ field }}
+        <small style="color: grey;">{{ field.help_text }}</small> -->
+
+
+    {% if account_form.non_field_errors %}
+        <div style="color: red">
+            <p>{{account_form.non_field_errors}}</p>
+        </div>
+        {% endif %}
+    <button type="submit" >Save Changes</button>
+
+</form>
+
+<a href="{% url 'password_change' %}">Change Password | </a>
+<a href="{% url 'password_reset' %}">Reset Password</a>
+
+{% endblock %}

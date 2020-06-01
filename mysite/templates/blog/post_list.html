@@ -1,14 +1,22 @@
 {% extends  'base.html' %}
+{%block title %}Posts{% endblock  %}
 
 {% block content %}
     {% if obj %}
     {% for post in obj %}
-        <div class="col-md-8">
-        <h2><a href="{{post.get_absolute_url}}">{{post.title }}</a></h2>
-        <p>{{post.body|truncatechars:200|safe|linebreaks}}</p>
+<div class="col-md-8  content  text-justify pt-4">
+        <div>
+            {%if post.image %}
+                <img src="{{ post.image.url }}" style="width:650px;height:350px;" class=" img-fluid"/>
+            {% endif %}
         </div>
+        <h2><a  href="{{post.get_absolute_url}}">{{post.title }}</a></h2>
+           <span style="color:red;">{{post.author.username|title}}</span>  on <span style="color:teal">{{post.created}}</span>
+        <p class="text-justify">{{post.body|truncatechars:200|safe|linebreaks}}</p>
+        </div>
+        <hr>
     {% endfor %}
     {% else %}
-    <p>No posts </p>
+    <p>No posts Containing <h4>"{{query}}"</h4></p>
     {% endif %}
 {% endblock %}

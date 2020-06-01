@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{%block title %}Login{% endblock  %}
+
+{% block content  %}
+    <div class="container jumbotron text-justify">
+    <h1 class="display-4">Login Here  </h1>
+    <form id="login_form" class="form" method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    {{login_form.as_p}}
+    <input type="submit" value="Login">
+    </form>
+    <p class="p-4 m-3">Not a Member?<a href="{%url 'register' %}">Register Here...</a></p>
+    </div>
+{% endblock %}

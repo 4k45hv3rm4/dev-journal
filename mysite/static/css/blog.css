@@ -1,12 +1,101 @@
-.posttitle{
+.techfont{
   font-family: 'Russo One', sans-serif;
-  font-size: 3em;
-  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 10px;
 }
+.bigbrand{
+  font-size: 1.5em;
+}
+
+
 .postcontent{
-  font-family: 'Montserrat' ;
-  font-size: 1.53em;
+ font-family: 'Montserrat', sans-serif;
+   font-size: 1.1em;
+  padding-top: 10px;
+
 }
 .postdate{
+    align-items: center;
+    text-align: center;
+
+}
+
+.status{
+    color:red;
+}
+form{
+    padding:10px 20px 10px 20px ;
+
+}
+.containerbutton{
+  margin:0 auto;
+    align-items: center;
   text-align: center;
+  display: inline-block;
+}
+
+
+@media (min-width:320px)  { /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
+   .posttitle{
+  font-family: 'Russo One', sans-serif;
+  font-size: 1em;
+  text-align: center;
+}
+   }
+@media (min-width:480px)  { /* smartphones, Android phones, landscape iPhone */
+  .posttitle{
+    font-family: 'Russo One', sans-serif;
+    font-size: 1em;
+    text-align: center;
+  }
+}
+@media (min-width:600px)  { /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
+  .posttitle{
+    font-family: 'Russo One', sans-serif;
+    font-size: 1em;
+    text-align: center;
+  }
+}
+@media (min-width:801px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */
+  .image{
+    padding-left: 50px;
+    margin-left:50px;
+
+  }
+  .postcontent{
+    padding-left: 30px;
+    margin-left: 20px;
+  }
+  .containerbutton{
+    padding:30px 50px 20px 50px;
+  }
+
+  .posttitle{
+    font-family: 'Russo One', sans-serif;
+    font-size: 3em;
+    text-align: center;
+  }
+}
+@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */
+  .image{
+    padding-left: 50px;
+    margin-left:50px;
+  }
+  .posttitle{
+    font-family: 'Russo One', sans-serif;
+    font-size: 3em;
+    text-align: center;
+  }
+}
+@media (min-width:1281px)
+{
+    .image{
+    padding-left: 50px;
+    margin-left:50px;
+  }
+  .posttitle{
+    font-family: 'Russo One', sans-serif;
+    font-size: 3em;
+    text-align: center;
+  }
 }

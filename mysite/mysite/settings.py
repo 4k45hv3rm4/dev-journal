@@ -25,9 +25,11 @@ SECRET_KEY = 'v_w=-e0$vc-etfsl8(_9ewa^&#cega%jce%*fp2l$+2qppqms!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ALLOWED_HOSTS = []
 
-
+LOGIN_REDIRECT_URL = '/blog/login/'
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
 ]
 
 MIDDLEWARE = [
@@ -91,6 +94,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+AUTH_USER_MODEL ='blog.Account'
 
 
 # Password validation

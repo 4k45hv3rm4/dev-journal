@@ -1,22 +1,87 @@
 {% extends 'base.html' %}
+{%block title %}{{obj.title}}{% endblock  %}
 
 
 {% block content %}
-    <div class="pt-4 mt-4 container col-md-8">
+    <div class="pt-4 mt-4 container col-md-10">
     {% if obj %}
 
         <h3 class="posttitle">{{obj.title}}</h3>
+        <div class="image">
         {% if obj.image %}
-            <img src="{{ obj.image.url }}" style="width:350px;height:150px;" class="img-repsonsive" />
+            <img src="{{ obj.image.url }}" style="width:650px;height:250px;" class=" img-fluid"/>
         {% endif %}
-    <br>    <small class="postdate">{{obj.created}}</small>
-        <h4><small>{{obj.status|title}}</small></h4>
-        <p class="postcontent">{{obj.body|safe|linebreaks}}</p>
+        </div>
+        <div class="details date postdate">
+           <span style="color:teal;">{{obj.author.username|title}}</span>  {{obj.created}} {%if obj.author == request.user and  user.is_authenticated %}|{% if obj.status == 'publish' %} <small class="  text-danger" >
+           {{obj.status|title}}ed</small>
+            {% else %}
+            <small class=" display-5 text-danger" >
+           {{obj.status|title}}</small>
+            {% endif %}
+        {% endif %}
+        </div>
 
+        <div class="postcontent  text-justify">{{obj.body|linebreaks}}
+        </div>
+        {%if obj.author == request.user and  user.is_authenticated %}
+        <div class=" containerbutton center">
+            <a href="{%url 'post_update' obj.slug %}" class="btn text-white  btn-primary btn-link">UPDATE</a>
+            <a href="{%url 'post_delete' obj.slug %}" class="btn text-white  btn-primary btn-link">DELETE</a>
+        </div>
+        {% endif %}
+
+    {% if obj.status == 'publish' %}
+        <div class="comment offset-lg-1">
+        {% with comments.count as total_comments %}
+        <h2>
+        {{ total_comments }} comment{{ total_comments|pluralize }}
+        </h2>
+        {% endwith %}
+
+
+
+        {% for comment in comments %}
+
+            <div class="row" style="border :1px solid purple;text-align:left">
+
+                <div class="col-lg-1 col-sm-1 bg-dark text-white">
+                <small>{{ comment.created.date }}</small>
+                </div>
+                <div class="col-lg-3  col-sm-6">
+                {{comment.author.username}} :
+                </div>
+                <div class="col-lg-7 col-sm-5">
+                {{ comment.body|linebreaks }}
+                </div>
+            </div>
+           <p>  </p>
+
+            {% empty %}
+            <p>There are no comments yet.</p>
+        {% endfor %}
+
+        {% if new_comment %}
+        <h2>Your comment has been added.</h2>
+        {% else %}
+
+        <h2>Add a new comment</h2>
+
+        <form  method="post">
+        {{ comment_form.as_p }}
+        {% csrf_token %}
+        <input type="submit" value="Add comment" class="btn btn-primary">
+        </form>
+        {% endif %}
+
+        </div>
     {% else %}
 
-        <p>No details found</p>
+
 
     {% endif %}
+    {% endif %}
     </div>
+
+
 {% endblock %}
