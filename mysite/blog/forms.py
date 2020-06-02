@@ -52,7 +52,7 @@ class AccountUpdateform(forms.ModelForm):
 class PostForm(forms.ModelForm):
     class Meta():
         model   = Post
-        fields  = ('title', 'body', 'status', 'image')
+        fields  = ('title', 'body', 'status', 'image','tags')
         widgets = {
                    'title':forms.TextInput(attrs={'class':'textinputclass'}),
                    'body':forms.Textarea(attrs={'class':'editable medium-editor-textarea postcontent'})
@@ -79,12 +79,13 @@ class CommentForm(forms.ModelForm):
 class UpdatePostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'image','status', 'body']
+        fields = ['title', 'image','status', 'body', 'tags']
     def save(self, commit=False):
         blog_post = self.instance
         blog_post.title = self.cleaned_data['title']
         blog_post.body  = self.cleaned_data['body']
         blog_post.status = self.cleaned_data['status']
+
         if self.cleaned_data['image']:
             blog_post.image = self.cleaned_data['image']
         if commit:

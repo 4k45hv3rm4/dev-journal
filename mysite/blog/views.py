@@ -8,6 +8,7 @@ from mysite.settings import LOGIN_REDIRECT_URL
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from taggit.models import Tag
 
 from .models import (
             Post,
@@ -115,9 +116,14 @@ def index(request):
     return render(request, "base.html", {})
 
 # list of posts
-def post_list(request):
+def post_list(request, tag_slug=None):
     obj = Post.objects.filter(status="publish")
+    # obj = Post.publish.all()
     query = ""
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        obj = obj.filter(tags__in=[tag])
     context={}
     if request.GET:
         query = request.GET.get('q', '')
@@ -125,6 +131,7 @@ def post_list(request):
         context['query'] = str(query)
     obj = sorted(get_blog_queryset(query), key=attrgetter('updated'), reverse=True)
     context['obj']  = obj
+    context['tag'] = tag
     return render(request, "blog/post_list.html", context)
 
 
@@ -146,6 +153,7 @@ def create_post(request):
             instance = form.save(commit=False)
             instance.author = request.user
             instance.save()
+            form.save_m2m()
             return HttpResponseRedirect(instance.get_absolute_url())
     context = {
     'form':form
@@ -157,6 +165,7 @@ def create_post(request):
 # detail for a particular post
 def post_detail(request, slug):
     obj = get_object_or_404(Post, slug=slug)
+    tags =  obj.tags.all()
     comments = obj.comments.filter(active=True)
     new_comment = None
     if request.method == 'POST':
@@ -177,7 +186,8 @@ def post_detail(request, slug):
     'obj':obj,
     'comments': comments,
     'new_comment': new_comment,
-    'comment_form': comment_form}
+    'comment_form': comment_form,'tags':tags}
+
     return render(request, "blog/post_detail.html",context)
 
 @login_required(login_url=LOGIN_REDIRECT_URL)
@@ -190,7 +200,9 @@ def post_update(request, slug):
         form = UpdatePostForm(request.POST or None, request.FILES or None, instance=post)
         if form.is_valid():
             obj = form.save(commit=False)
+            print(obj.tags.all())
             obj.save()
+
             context['success_message'] = "updated"
             post = obj
             return HttpResponseRedirect(post.get_absolute_url())
@@ -200,7 +212,8 @@ def post_update(request, slug):
     initial={
     'title':post.title,
     'body':post.body,
-    'image':post.image
+    'image':post.image,
+    'tags':post.tags.all()
     })
 
     context['form'] = form

@@ -19,8 +19,15 @@
             <small class=" display-5 text-danger" >
            {{obj.status|title}}</small>
             {% endif %}
-        {% endif %}
+            {% endif %}
         </div>
+
+        <p class="tags">Tags: {% for tag in obj.tags.all %}
+        <a style="border-radius:10px; padding:3px;font-size: 15px;font-family: monospace;" class="text-decoration-none text-dark bg-light" href="{% url 'post_list_by_tag' tag.slug %}">
+        {{ tag.name }}
+        </a>
+        {% if not forloop.last %}  {% endif %}
+        {% endfor %}</p>
 
         <div class="postcontent  text-justify">{{obj.body|linebreaks}}
         </div>

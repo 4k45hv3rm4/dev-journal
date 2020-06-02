@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from taggit.managers import TaggableManager
 from django.db.models.signals import  post_save, post_delete
 from django.urls import reverse
 from django.dispatch import receiver
@@ -23,6 +24,7 @@ class Post(models.Model):
     slug     = models.CharField(max_length=250, unique=True)
     author   = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image    = models.ImageField(upload_to=upload_location, null=True, blank=True)
+
     body     = models.TextField()
     publish  = models.DateTimeField(auto_now=False, auto_now_add=False, blank=True, null=True)
     created  = models.DateTimeField(auto_now_add=True)
@@ -30,7 +32,7 @@ class Post(models.Model):
     status   = models.CharField(max_length=10,
                                 choices=STATUS_CHOICES,
                                 default="draft")
-
+    tags     = TaggableManager()
     class Meta:
         ordering = ('-publish',)
 

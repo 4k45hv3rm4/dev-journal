@@ -23,17 +23,34 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'v_w=-e0$vc-etfsl8(_9ewa^&#cega%jce%*fp2l$+2qppqms!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-ALLOWED_HOSTS = []
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER ='akash4kverma@gmail.com'
+EMAIL_HOST_PASSWORD = 'vzdwfjnleogexrgh'
+EMAIL_PORT=587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = '4kash.inc Team <noreply@4kash.inc>'
+
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+# EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+
+# if DEBUG:
+    # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ALLOWED_HOSTS = ['127.0.0.1']
 
 LOGIN_REDIRECT_URL = '/blog/login/'
 # Application definition
 
 INSTALLED_APPS = [
     'blog',
+    'taggit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -139,3 +156,6 @@ STATICFILES_DIRS=[STATIC_DIR,]
 MEDIA_URL = '/media/'
 MEDIA_DIR = os.path.join(BASE_DIR, "media/")
 MEDIA_ROOT = MEDIA_DIR
+
+
+# Googlepass = "vzdwfjnleogexrgh"

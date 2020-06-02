@@ -2,15 +2,33 @@
 {%block title %}Posts{% endblock  %}
 
 {% block content %}
+    {% if tag %}
+    <h2>Posts tagged with "{{ tag.name }}"</h2>
+    {% endif %}
+
+
+
     {% if obj %}
+
     {% for post in obj %}
 <div class="col-md-8  content  text-justify pt-4">
         <div>
+
             {%if post.image %}
                 <img src="{{ post.image.url }}" style="width:650px;height:350px;" class=" img-fluid"/>
             {% endif %}
+
         </div>
         <h2><a  href="{{post.get_absolute_url}}">{{post.title }}</a></h2>
+           <p class="tags">
+        Tags:
+        {% for tag in post.tags.all %}
+        <a style="border-radius:10px; padding:3px;font-size: 15px;font-family: monospace;" class="text-decoration-none text-dark bg-light" href="{% url 'post_list_by_tag' tag.slug %}">
+        {{ tag.name }}
+        </a>
+        {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+        </p>
            <span style="color:red;">{{post.author.username|title}}</span>  on <span style="color:teal">{{post.created}}</span>
         <p class="text-justify">{{post.body|truncatechars:200|safe|linebreaks}}</p>
         </div>
